@@ -1,0 +1,14 @@
+pandas
+sqlalchemy
+psycopg2-binary
+jupyter
+matplotlib
+seaborn
+scikit-learn
+django
+djangorestframework
+drfspectacular
+celery
+redis
+python-dotenv
+openpyxl

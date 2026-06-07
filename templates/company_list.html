@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 style="margin-bottom:30px;">
+Nifty100 Companies
+</h1>
+
+<p>
+    Total Companies: {{ companies|length }}
+</p>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+">
+
+{% for company in companies %}
+
+<a href="/company/{{ company.symbol }}/"
+style="text-decoration:none;color:black;">
+
+<div class="card">
+
+<h2>
+{{ company.symbol }}
+</h2>
+
+</div>
+
+</a>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

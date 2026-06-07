@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.page-title{
+    margin-bottom:25px;
+}
+
+.search-box{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-size:16px;
+}
+
+.table-container{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#111827;
+    color:white;
+}
+
+th{
+    padding:15px;
+    text-align:left;
+}
+
+td{
+    padding:15px;
+    border-bottom:1px solid #eee;
+}
+
+tbody tr:hover{
+    background:#f9fafb;
+}
+
+.symbol-link{
+    text-decoration:none;
+    font-weight:bold;
+    color:#2563eb;
+}
+
+.badge{
+    padding:6px 12px;
+    border-radius:20px;
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.strong{
+    background:#10b981;
+}
+
+.average{
+    background:#f59e0b;
+}
+
+.weak{
+    background:#ef4444;
+}
+
+.score-good{
+    color:#10b981;
+    font-weight:bold;
+}
+
+.score-mid{
+    color:#f59e0b;
+    font-weight:bold;
+}
+
+.score-low{
+    color:#ef4444;
+    font-weight:bold;
+}
+
+</style>
+
+<h1 class="page-title">
+Stock Screener
+</h1>
+
+<input
+type="text"
+id="searchInput"
+class="search-box"
+placeholder="Search company symbol..."
+
+>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+    <th>Symbol</th>
+    <th>Health Score</th>
+    <th>Health Label</th>
+    <th>ROE</th>
+    <th>Debt/Equity</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for c in companies %}
+
+<tr>
+
+<td>
+    <a
+        class="symbol-link"
+        href="/company/{{ c.symbol }}/"
+    >
+        {{ c.symbol }}
+    </a>
+</td>
+
+<td>
+
+{% if c.health_score >= 70 %} <span class="score-good">
+{{ c.health_score|floatformat:1 }} </span>
+
+{% elif c.health_score >= 40 %} <span class="score-mid">
+{{ c.health_score|floatformat:1 }} </span>
+
+{% else %} <span class="score-low">
+{{ c.health_score|floatformat:1 }} </span>
+{% endif %}
+
+</td>
+
+<td>
+
+{% if c.health_label == "STRONG" %} <span class="badge strong">
+STRONG </span>
+
+{% elif c.health_label == "AVERAGE" %} <span class="badge average">
+AVERAGE </span>
+
+{% else %} <span class="badge weak">
+WEAK </span>
+{% endif %}
+
+</td>
+
+<td>
+{{ c.roe|floatformat:2 }}
+</td>
+
+<td>
+{{ c.debt_to_equity|floatformat:2 }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+document
+.getElementById("searchInput")
+.addEventListener("keyup", function(){
+
+const value =
+this.value.toLowerCase();
+
+document
+.querySelectorAll("tbody tr")
+.forEach(row => {
+
+row.style.display =
+row.innerText
+.toLowerCase()
+.includes(value)
+? ""
+: "none";
+
+});
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Nifty100 Analytics</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:Arial, sans-serif;
+        background:#f4f6f9;
+    }
+
+    .navbar{
+        background:#111827;
+        color:white;
+        padding:15px 40px;
+
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .logo{
+        font-size:24px;
+        font-weight:bold;
+    }
+
+    .menu a{
+        color:white;
+        text-decoration:none;
+        margin-left:20px;
+    }
+
+    .menu a:hover{
+        color:#60a5fa;
+    }
+
+    .container{
+        max-width:1400px;
+        margin:auto;
+        padding:30px;
+    }
+
+    .card{
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .badge{
+        padding:6px 12px;
+        border-radius:20px;
+        color:white;
+        font-size:12px;
+        font-weight:bold;
+    }
+
+    .strong{
+        background:#10b981;
+    }
+
+    .average{
+        background:#f59e0b;
+    }
+
+    .weak{
+        background:#ef4444;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+
+<div class="logo">
+    Nifty100 Analytics
+</div>
+
+<div class="menu">
+    <a href="/">Home</a>
+    <a href="/companies-page/">Companies</a>
+    <a href="/screener/">Screener</a>
+    <a href="/compare/">Compare</a>
+</div>
+
+</nav>
+
+<div class="container">
+
+{% block content %}
+{% endblock %}
+
+</div>
+
+</body>
+</html>

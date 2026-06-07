@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.compare-header{
+    margin-bottom:30px;
+}
+
+.compare-controls{
+    display:flex;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.compare-controls select{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    min-width:220px;
+}
+
+.compare-controls button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 24px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.compare-controls button:hover{
+    background:#1d4ed8;
+}
+
+.result-card{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#111827;
+    color:white;
+}
+
+th, td{
+    padding:15px;
+    text-align:left;
+    border-bottom:1px solid #eee;
+}
+
+tbody tr:hover{
+    background:#f9fafb;
+}
+
+.metric{
+    font-weight:bold;
+}
+
+</style>
+
+<div class="compare-header">
+
+
+<h1>Compare Companies</h1>
+
+</div>
+
+<div class="compare-controls">
+
+<select id="stock1">
+{% for c in companies %}
+<option value="{{ c.symbol }}">
+{{ c.symbol }}
+</option>
+{% endfor %}
+</select>
+
+<select id="stock2">
+{% for c in companies %}
+<option value="{{ c.symbol }}">
+{{ c.symbol }}
+</option>
+{% endfor %}
+</select>
+
+<button onclick="compareStocks()">
+Compare
+</button>
+
+</div>
+
+<div class="result-card">
+
+<table id="resultTable">
+
+<thead>
+
+<tr>
+<th>Metric</th>
+<th>Company 1</th>
+<th>Company 2</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td colspan="3">
+Select two companies and click Compare
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+function compareStocks(){
+
+const stock1 =
+document.getElementById("stock1").value;
+
+const stock2 =
+document.getElementById("stock2").value;
+
+fetch(
+`/api/v1/compare/?stock1=${stock1}&stock2=${stock2}`
+)
+
+.then(response => response.json())
+
+.then(data => {
+
+if(data.length < 2){
+    return;
+}
+
+const c1 = data[0];
+const c2 = data[1];
+
+document.querySelector(
+"#resultTable tbody"
+).innerHTML = `
+
+<tr>
+<td class="metric">Health Score</td>
+<td>${c1.health_score}</td>
+<td>${c2.health_score}</td>
+</tr>
+
+<tr>
+<td class="metric">Health Label</td>
+<td>${c1.health_label}</td>
+<td>${c2.health_label}</td>
+</tr>
+
+<tr>
+<td class="metric">ROE</td>
+<td>${c1.roe}</td>
+<td>${c2.roe}</td>
+</tr>
+
+<tr>
+<td class="metric">Debt To Equity</td>
+<td>${c1.debt_to_equity}</td>
+<td>${c2.debt_to_equity}</td>
+</tr>
+
+<tr>
+<td class="metric">Sales</td>
+<td>${c1.sales}</td>
+<td>${c2.sales}</td>
+</tr>
+
+<tr>
+<td class="metric">Net Profit</td>
+<td>${c1.net_profit}</td>
+<td>${c2.net_profit}</td>
+</tr>
+
+`;
+
+})
+
+.catch(error => {
+
+console.log(error);
+
+});
+
+}
+
+</script>
+
+{% endblock %}
